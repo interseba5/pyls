@@ -37,3 +37,8 @@ def build_tree_from_json(json_path: str) -> TreeNode:
 def enqueue(queue: list[tuple[dict, TreeNode]], data: dict, parent: TreeNode) -> None:
     for child_data in data["contents"]:
         queue.append((child_data, parent))
+
+
+def print_children(root: TreeNode):
+    print(
+        " ".join([child for child in root.children if not child.startswith(".")]))
