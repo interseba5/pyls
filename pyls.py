@@ -1,5 +1,12 @@
-from data.tree import build_tree_from_json, print_children
+from data.tree import FileSystemTree
+import argparse
 
-root = build_tree_from_json(".\\test\\utils\\filesystem.json")
+parser = argparse.ArgumentParser(prog='pyls',
+                                 description='list directory contents')
+parser.add_argument('-A', action='store_true',
+                    help="do not ignore entries starting with .")
 
-print_children(root)
+args = parser.parse_args()
+tree = FileSystemTree(".\\filesystem.json")
+if tree is not None:
+    tree.print_children(show_all=args.A)
