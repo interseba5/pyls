@@ -18,6 +18,7 @@ def load_json_from_file(json_path: str) -> dict:
             json_data = json.load(json_file)
         if "size" not in json_data or "time_modified" not in json_data \
                 or "name" not in json_data or "permissions" not in json_data:
+            json_data = {}
             raise ValueError
     except ValueError:
         print("The provided json filesystem is invalid", file=sys.stderr)

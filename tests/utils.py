@@ -129,6 +129,14 @@ mock_filesystem = {
     ]
 }
 
+mock_object = {
+    "name": "interpreter",
+    "size": 4096,
+    "time_modified": 1699957865,
+    "permissions": "-rw-r--r--",
+    "contents": []
+}
+
 long_listing_result = """-rw-r--r-- 1071 Nov 14 06:57 LICENSE
 -rw-r--r--   83 Nov 14 06:57 README.md
 drwxr-xr-x 4096 Nov 14 11:28 ast
