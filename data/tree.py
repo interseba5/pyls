@@ -9,12 +9,14 @@ import operator
 class TreeNode:
     def __init__(self, name: str, size: int, time_modified: int, permissions: str):
         self.data = FileSystemNode(name, size, time_modified, permissions)
-        self.children: dict[str, TreeNode] = {}
+        self.children: Optional[dict[str, TreeNode]] = None
 
     def __str__(self) -> str:
         return self.data.name
 
     def add_child(self, name: str, child) -> None:
+        if self.children is None:
+            self.children = {}
         self.children[name] = child
 
 
@@ -57,15 +59,35 @@ class FileSystemTree:
         for child_data in data["contents"]:
             queue.append((child_data, parent))
 
-    def print_children(self, show_all=False, long_listing=False, reverse_sorting=False, sort_by_time=False) -> None:
+    @staticmethod
+    def filter_children(filter_by: str, children: list[TreeNode]) -> list[TreeNode]:
+        filtered_children = children
+        if filter_by in ("file", "dir"):
+            if filter_by == "file":
+                filtered_children = [
+                    child for child in children if child.children is None]
+            else:
+                filtered_children = [
+                    child for child in children if child.children is not None]
+        return filtered_children
+
+    @staticmethod
+    def sort_children(children: list[TreeNode], sort_by: str, reverse: bool) -> list[TreeNode]:
+        sorted_children = children
+        sorted_children.sort(
+            key=operator.attrgetter(sort_by), reverse=reverse)
+        return sorted_children
+
+    def print_children(self, show_all=False, long_listing=False, reverse_sorting=False, sort_by_time=False, filter_by: Optional[str] = None) -> None:
         if self.root is None:
             return
 
-        sorted_children = list(self.root.children.values())
-        sort_key = "data.time_modified" if sort_by_time else "data.name"
+        filtered_children = self.filter_children(
+            filter_by, list(self.root.children.values()))
 
-        sorted_children.sort(
-            key=operator.attrgetter(sort_key), reverse=reverse_sorting)
+        sort_key = "data.time_modified" if sort_by_time else "data.name"
+        sorted_children = self.sort_children(
+            children=filtered_children, sort_by=sort_key, reverse=reverse_sorting)
 
         strings_to_print: list[str] = []
         for child in sorted_children:

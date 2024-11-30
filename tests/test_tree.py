@@ -91,3 +91,17 @@ def test_ls_sort_by_time_reverse(capfd, tree):
     tree.print_children(reverse_sorting=True, sort_by_time=True)
     out, _ = capfd.readouterr()
     assert out == "parser ast lexer token main.go go.mod LICENSE README.md\n"
+
+
+def test_long_listing_sort_by_time_reverse_only_file(capfd, tree):
+    tree.print_children(long_listing=True,
+                        reverse_sorting=True, sort_by_time=True, filter_by="file")
+    out, _ = capfd.readouterr()
+    assert out == ll_sort_by_time_reverse_only_file
+
+
+def test_long_listing_sort_by_time_reverse_only_dir(capfd, tree):
+    tree.print_children(long_listing=True,
+                        reverse_sorting=True, sort_by_time=True, filter_by="dir")
+    out, _ = capfd.readouterr()
+    assert out == ll_sort_by_time_reverse_only_dir

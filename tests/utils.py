@@ -190,3 +190,15 @@ drwxr-xr-x 4096 Nov 14 10:51 lexer
 drwxr-xr-x 4096 Nov 14 11:28 ast
 drwxr-xr-x 4096 Nov 17 08:21 parser
 """
+
+ll_sort_by_time_reverse_only_file = """-rw-r--r--   74 Nov 14 09:27 main.go
+-rw-r--r--   60 Nov 14 09:21 go.mod
+-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r--   83 Nov 14 06:57 README.md
+"""
+
+ll_sort_by_time_reverse_only_dir = """drwxr-xr-x 4096 Nov 17 08:21 parser
+drwxr-xr-x 4096 Nov 14 11:28 ast
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+drwxr-xr-x 4096 Nov 14 10:27 token
+"""
