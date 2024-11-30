@@ -2,6 +2,7 @@ from data.filesystem import FileSystemNode
 import json
 import sys
 from typing import Optional
+from time import strftime, localtime
 
 
 class TreeNode:
@@ -55,11 +56,18 @@ class FileSystemTree:
         for child_data in data["contents"]:
             queue.append((child_data, parent))
 
-    def print_children(self, show_all):
+    def print_children(self, show_all: bool, long_listing: bool):
         if self.root is None:
             return
-        if show_all:
-            print(" ".join(self.root.children))
-        else:
-            print(
-                " ".join([child for child in self.root.children if not child.startswith(".")]))
+
+        children_len = len(self.root.children.values()) - 1
+        for index, child in enumerate(self.root.children.values()):
+            if (not show_all and not child.data.name.startswith(".")) or show_all:
+                if long_listing:
+                    formatted_time = strftime(
+                        "%b %d %H:%M", localtime(child.data.time_modified))
+                    print(
+                        f"{child.data.permissions} {child.data.size:>4} {formatted_time} {child.data.name}")
+                else:
+                    is_last = index == children_len
+                    print(child.data.name, end="\n" if is_last else " ")

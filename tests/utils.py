@@ -8,25 +8,25 @@ mock_filesystem = {
             "name": ".gitignore",
             "size": 8911,
             "time_modified": 1699941437,
-            "permissions": "drwxr-xr-x"
+            "permissions": "-rw-r--r--"
         },
         {
             "name": "LICENSE",
             "size": 1071,
             "time_modified": 1699941437,
-            "permissions": "drwxr-xr-x"
+            "permissions": "-rw-r--r--"
         },
         {
             "name": "README.md",
             "size": 83,
             "time_modified": 1699941437,
-            "permissions": "drwxr-xr-x"
+            "permissions": "-rw-r--r--"
         },
         {
             "name": "ast",
             "size": 4096,
             "time_modified": 1699957739,
-            "permissions": "-rw-r--r--",
+            "permissions": "drwxr-xr-x",
             "contents": [
                 {
                     "name": "go.mod",
@@ -46,7 +46,7 @@ mock_filesystem = {
             "name": "go.mod",
             "size": 60,
             "time_modified": 1699950073,
-            "permissions": "drwxr-xr-x"
+            "permissions": "-rw-r--r--"
         },
         {
             "name": "lexer",
@@ -110,7 +110,7 @@ mock_filesystem = {
             "name": "token",
             "size": 4096,
             "time_modified": 1699954070,
-            "permissions": "-rw-r--r--",
+            "permissions": "drwxr-xr-x",
             "contents": [
                 {
                     "name": "token.go",
@@ -128,3 +128,22 @@ mock_filesystem = {
         }
     ]
 }
+
+long_listing_result = """-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r--   83 Nov 14 06:57 README.md
+drwxr-xr-x 4096 Nov 14 11:28 ast
+-rw-r--r--   60 Nov 14 09:21 go.mod
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+-rw-r--r--   74 Nov 14 09:27 main.go
+drwxr-xr-x 4096 Nov 17 08:21 parser
+drwxr-xr-x 4096 Nov 14 10:27 token\n"""
+
+long_listing_result_all = """-rw-r--r-- 8911 Nov 14 06:57 .gitignore
+-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r--   83 Nov 14 06:57 README.md
+drwxr-xr-x 4096 Nov 14 11:28 ast
+-rw-r--r--   60 Nov 14 09:21 go.mod
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+-rw-r--r--   74 Nov 14 09:27 main.go
+drwxr-xr-x 4096 Nov 17 08:21 parser
+drwxr-xr-x 4096 Nov 14 10:27 token\n"""
