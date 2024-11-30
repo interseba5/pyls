@@ -136,7 +136,8 @@ drwxr-xr-x 4096 Nov 14 11:28 ast
 drwxr-xr-x 4096 Nov 14 10:51 lexer
 -rw-r--r--   74 Nov 14 09:27 main.go
 drwxr-xr-x 4096 Nov 17 08:21 parser
-drwxr-xr-x 4096 Nov 14 10:27 token\n"""
+drwxr-xr-x 4096 Nov 14 10:27 token
+"""
 
 long_listing_result_all = """-rw-r--r-- 8911 Nov 14 06:57 .gitignore
 -rw-r--r-- 1071 Nov 14 06:57 LICENSE
@@ -146,4 +147,46 @@ drwxr-xr-x 4096 Nov 14 11:28 ast
 drwxr-xr-x 4096 Nov 14 10:51 lexer
 -rw-r--r--   74 Nov 14 09:27 main.go
 drwxr-xr-x 4096 Nov 17 08:21 parser
-drwxr-xr-x 4096 Nov 14 10:27 token\n"""
+drwxr-xr-x 4096 Nov 14 10:27 token
+"""
+
+long_listing_result_reversed = """drwxr-xr-x 4096 Nov 14 10:27 token
+drwxr-xr-x 4096 Nov 17 08:21 parser
+-rw-r--r--   74 Nov 14 09:27 main.go
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+-rw-r--r--   60 Nov 14 09:21 go.mod
+drwxr-xr-x 4096 Nov 14 11:28 ast
+-rw-r--r--   83 Nov 14 06:57 README.md
+-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+"""
+
+long_listing_result_reversed_all = """drwxr-xr-x 4096 Nov 14 10:27 token
+drwxr-xr-x 4096 Nov 17 08:21 parser
+-rw-r--r--   74 Nov 14 09:27 main.go
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+-rw-r--r--   60 Nov 14 09:21 go.mod
+drwxr-xr-x 4096 Nov 14 11:28 ast
+-rw-r--r--   83 Nov 14 06:57 README.md
+-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r-- 8911 Nov 14 06:57 .gitignore
+"""
+
+ll_sort_by_time_descending = """drwxr-xr-x 4096 Nov 17 08:21 parser
+drwxr-xr-x 4096 Nov 14 11:28 ast
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+drwxr-xr-x 4096 Nov 14 10:27 token
+-rw-r--r--   74 Nov 14 09:27 main.go
+-rw-r--r--   60 Nov 14 09:21 go.mod
+-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r--   83 Nov 14 06:57 README.md
+"""
+
+ll_sort_by_time_ascending = """-rw-r--r-- 1071 Nov 14 06:57 LICENSE
+-rw-r--r--   83 Nov 14 06:57 README.md
+-rw-r--r--   60 Nov 14 09:21 go.mod
+-rw-r--r--   74 Nov 14 09:27 main.go
+drwxr-xr-x 4096 Nov 14 10:27 token
+drwxr-xr-x 4096 Nov 14 10:51 lexer
+drwxr-xr-x 4096 Nov 14 11:28 ast
+drwxr-xr-x 4096 Nov 17 08:21 parser
+"""

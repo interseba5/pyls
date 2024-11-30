@@ -1,4 +1,4 @@
-from tests.utils import mock_filesystem, long_listing_result, long_listing_result_all
+from tests.utils import *
 from data.tree import FileSystemTree
 import pytest
 
@@ -21,13 +21,13 @@ def test_empty_tree(capfd, mocker):
 
 
 def test_ls(capfd, tree):
-    tree.print_children(show_all=False, long_listing=False)
+    tree.print_children()
     out, _ = capfd.readouterr()
     assert out == "LICENSE README.md ast go.mod lexer main.go parser token\n"
 
 
 def test_ls_all(capfd, tree):
-    tree.print_children(show_all=True, long_listing=False)
+    tree.print_children(show_all=True)
     out, _ = capfd.readouterr()
     assert out == ".gitignore LICENSE README.md ast go.mod lexer main.go parser token\n"
 
@@ -36,3 +36,58 @@ def test_ls_long_listing_all(capfd, tree):
     tree.print_children(show_all=True, long_listing=True)
     out, _ = capfd.readouterr()
     assert out == long_listing_result_all
+
+
+def test_ls_long_listing(capfd, tree):
+    tree.print_children(long_listing=True)
+    out, _ = capfd.readouterr()
+    assert out == long_listing_result
+
+
+def test_ls_long_listing_reversed(capfd, tree):
+    tree.print_children(long_listing=True, reverse_sorting=True)
+    out, _ = capfd.readouterr()
+    assert out == long_listing_result_reversed
+
+
+def test_ls_long_listing_reversed_all(capfd, tree):
+    tree.print_children(show_all=True, long_listing=True, reverse_sorting=True)
+    out, _ = capfd.readouterr()
+    assert out == long_listing_result_reversed_all
+
+
+def test_ls_reversed(capfd, tree):
+    tree.print_children(reverse_sorting=True)
+    out, _ = capfd.readouterr()
+    assert out == "token parser main.go lexer go.mod ast README.md LICENSE\n"
+
+
+def test_ls_all_reversed(capfd, tree):
+    tree.print_children(show_all=True, reverse_sorting=True)
+    out, _ = capfd.readouterr()
+    assert out == "token parser main.go lexer go.mod ast README.md LICENSE .gitignore\n"
+
+
+def test_long_listing_sort_by_time(capfd, tree):
+    tree.print_children(long_listing=True, sort_by_time=True)
+    out, _ = capfd.readouterr()
+    assert out == ll_sort_by_time_ascending
+
+
+def test_long_listing_sort_by_time_reverse(capfd, tree):
+    tree.print_children(long_listing=True,
+                        reverse_sorting=True, sort_by_time=True)
+    out, _ = capfd.readouterr()
+    assert out == ll_sort_by_time_descending
+
+
+def test_ls_sort_by_time(capfd, tree):
+    tree.print_children(sort_by_time=True)
+    out, _ = capfd.readouterr()
+    assert out == "LICENSE README.md go.mod main.go token lexer ast parser\n"
+
+
+def test_ls_sort_by_time_reverse(capfd, tree):
+    tree.print_children(reverse_sorting=True, sort_by_time=True)
+    out, _ = capfd.readouterr()
+    assert out == "parser ast lexer token main.go go.mod LICENSE README.md\n"

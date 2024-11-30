@@ -3,6 +3,7 @@ import json
 import sys
 from typing import Optional
 from time import strftime, localtime
+import operator
 
 
 class TreeNode:
@@ -56,18 +57,25 @@ class FileSystemTree:
         for child_data in data["contents"]:
             queue.append((child_data, parent))
 
-    def print_children(self, show_all: bool, long_listing: bool):
+    def print_children(self, show_all=False, long_listing=False, reverse_sorting=False, sort_by_time=False) -> None:
         if self.root is None:
             return
 
-        children_len = len(self.root.children.values()) - 1
-        for index, child in enumerate(self.root.children.values()):
+        sorted_children = list(self.root.children.values())
+        sort_key = "data.time_modified" if sort_by_time else "data.name"
+
+        sorted_children.sort(
+            key=operator.attrgetter(sort_key), reverse=reverse_sorting)
+
+        strings_to_print: list[str] = []
+        for child in sorted_children:
             if (not show_all and not child.data.name.startswith(".")) or show_all:
                 if long_listing:
                     formatted_time = strftime(
                         "%b %d %H:%M", localtime(child.data.time_modified))
-                    print(
+                    strings_to_print.append(
                         f"{child.data.permissions} {child.data.size:>4} {formatted_time} {child.data.name}")
                 else:
-                    is_last = index == children_len
-                    print(child.data.name, end="\n" if is_last else " ")
+                    strings_to_print.append(child.data.name)
+        join_operator = "\n" if long_listing else " "
+        print(join_operator.join(strings_to_print))
