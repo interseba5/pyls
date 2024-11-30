@@ -1,4 +1,4 @@
-from data.tree import FileSystemTree
+from pyls.data.tree import FileSystemTree
 import argparse
 
 parser = argparse.ArgumentParser(prog="pyls",
@@ -15,8 +15,14 @@ parser.add_argument("-t", action="store_true",
 parser.add_argument("--filter", choices=['file', 'dir'],
                     help="filter the output based on given option. Use <file> to print only files. Use <dir> to print only directories")
 
+parser.add_argument('directory', nargs='?')
+
 args = parser.parse_args()
 tree = FileSystemTree(".\\structure.json")
 if tree is not None:
-    tree.print_children(show_all=args.A, long_listing=args.l,
-                        reverse_sorting=args.r, sort_by_time=args.t, filter_by=args.filter)
+    if not tree.change_directory(args.directory):
+        print(
+            f"error: cannot access '{args.directory}': No such file or directory")
+    else:
+        tree.print_children(show_all=args.A, long_listing=args.l,
+                            reverse_sorting=args.r, sort_by_time=args.t, filter_by=args.filter)

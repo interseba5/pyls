@@ -1,4 +1,4 @@
-from data.filesystem import FileSystemNode
+from pyls.data.filesystem import FileSystemNode
 import json
 import sys
 from typing import Optional
@@ -23,6 +23,7 @@ class TreeNode:
 class FileSystemTree:
     def __init__(self, json_path):
         self.root = self.build_tree_from_json(json_path)
+        self.current_node: Optional[TreeNode] = None
 
     def build_tree_from_json(self, json_path: str) -> Optional[TreeNode]:
         queue: list[tuple[dict, TreeNode]] = []
@@ -78,12 +79,29 @@ class FileSystemTree:
             key=operator.attrgetter(sort_by), reverse=reverse)
         return sorted_children
 
+    def change_directory(self, path: Optional[str]) -> bool:
+        fixed_path = path.replace("./", "") if path else path
+        current_node = self.root
+        if fixed_path and fixed_path != ".":
+            splitted_path = filter(None, fixed_path.split("/"))
+            for component in splitted_path:
+                if component in current_node.children:
+                    current_node = current_node.children[component]
+                else:
+                    return False
+        self.current_node = current_node
+        return True
+
     def print_children(self, show_all=False, long_listing=False, reverse_sorting=False, sort_by_time=False, filter_by: Optional[str] = None) -> None:
         if self.root is None:
             return
 
-        filtered_children = self.filter_children(
-            filter_by, list(self.root.children.values()))
+        if self.current_node.children is None:
+            children_list = [self.current_node]
+        else:
+            children_list = list(self.current_node.children.values())
+
+        filtered_children = self.filter_children(filter_by, children_list)
 
         sort_key = "data.time_modified" if sort_by_time else "data.name"
         sorted_children = self.sort_children(

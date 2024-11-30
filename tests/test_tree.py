@@ -1,5 +1,5 @@
 from tests.utils import *
-from data.tree import FileSystemTree
+from pyls.data.tree import FileSystemTree
 import pytest
 
 
@@ -7,7 +7,9 @@ import pytest
 def fixture_tree(mocker):
     mocker.patch.object(FileSystemTree, "load_json_from_file",
                         return_value=mock_filesystem)
-    return FileSystemTree("mock")
+    tree = FileSystemTree("mock")
+    tree.change_directory("")
+    return tree
 
 
 def test_empty_tree(capfd, mocker):
