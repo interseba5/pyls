@@ -15,7 +15,7 @@ Follow these steps to install and set up Pyls:
    ```
 2. **Create the metadata file:**
 
-   Create a `structure.json` file in the `pyls/pyls` folder. This file defines the directory structure for Pyls. The file must follow this format:
+   Create a `structure.json` file inside the `pyls` folder. This file defines the directory structure for Pyls. The file must follow this format:
    ```json
    {
     "name": "<root_name>",
