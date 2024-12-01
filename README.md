@@ -68,7 +68,7 @@ optional arguments:
 Pyls requires `Python 3.9` or higher.
 
 ## Unit test
-This repository includes a comprehensive suite of unit tests to validate all major features.
+This repository includes a comprehensive suite of unit tests to validate all major features. The tests are made using `pytest` and `pytest-mock`.
 
 ### How to run tests
 
@@ -80,4 +80,3 @@ This repository includes a comprehensive suite of unit tests to validate all maj
    ```
    pytest
    ```
-The tests are built with pytest to ensure robustness and reliability.
