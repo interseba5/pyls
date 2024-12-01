@@ -1,10 +1,19 @@
 """Test suite for the pyls.data.tree module"""
 
+from datetime import datetime, timedelta, timezone
+
 import pytest
 
 import tests.utils as ut
 from pyls.data.filesystem import FileSystemNodeType
 from pyls.data.tree import FileSystemTree
+
+
+def mock_localtime(timestamp):
+    """Mock the time.localtime method to get consistent testing result
+    when executing this tests in different timezones"""
+    dt = datetime.fromtimestamp(timestamp, tz=timezone(timedelta(hours=1)))
+    return dt.timetuple()
 
 
 @pytest.fixture(name="tree")
@@ -17,6 +26,8 @@ def fixture_tree(mocker):
     mocker
         The mocker object provided by pytest-mock
     """
+
+    mocker.patch("time.localtime", side_effect=mock_localtime)
     mocker.patch("pyls.utils.io.load_json_from_file",
                  return_value=ut.mock_filesystem)
     tree = FileSystemTree("mock")
@@ -34,6 +45,7 @@ def fixture_tree_nocd(mocker):
     mocker
         The mocker object provided by pytest-mock
     """
+    mocker.patch("time.localtime", side_effect=mock_localtime)
     mocker.patch("pyls.utils.io.load_json_from_file",
                  return_value=ut.mock_filesystem)
     tree = FileSystemTree("mock")

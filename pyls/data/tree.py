@@ -3,7 +3,7 @@ related to the tree structure of the filesystem"""
 
 import operator
 import sys
-from time import localtime, strftime
+import time
 from typing import Optional
 
 import pyls.utils.io as pylsio
@@ -261,8 +261,9 @@ class FileSystemTree:
         for child in filtered_children:
             if (not show_all and not child.data.name.startswith(".")) or show_all:
                 if long_listing:
-                    formatted_time = strftime(
-                        "%b %d %H:%M", localtime(child.data.time_modified))
+                    formatted_time = time.strftime(
+                        "%b %d %H:%M", time.localtime(
+                            child.data.time_modified))
                     formatted_size = humanize_size(
                         child.data.size) if humanize else child.data.size
                     strings_to_print.append(
