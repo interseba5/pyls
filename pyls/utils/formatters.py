@@ -4,11 +4,12 @@ from math import ceil
 
 
 def humanize_size(size: float) -> str:
-    """Convert a file size in bytes to a human-readable string with appropriate units.
+    """Convert a file size in bytes to a human-readable
+    string with appropriate units.
 
     Parameters
     ----------
-    size : float 
+    size : float
         The size in bytes to be converted.
 
     Returns
@@ -24,4 +25,7 @@ def humanize_size(size: float) -> str:
         size /= 1024
         unit_index += 1
     size = ceil(size * 10) / 10 if size < 10 else ceil(size)
-    return f"{size:.0f}{units[unit_index]}" if size >= 10 else f"{size:.1f}{units[unit_index]}"
+    if size >= 10:
+        return f"{size:.0f}{units[unit_index]}"
+    else:
+        return f"{size:.1f}{units[unit_index]}"

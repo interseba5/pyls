@@ -1,4 +1,5 @@
-"""Module that contains all the class and method related to the tree structure of the filesystem"""
+"""Module that contains all the class and method
+related to the tree structure of the filesystem"""
 
 import operator
 import sys
@@ -18,7 +19,8 @@ class TreeNode:
     data : FileSystemNode
         the file or directory data attached to the node
     children : dict[str, TreeNode] | None
-        dictionary name -> node of the node children if any. This value is None for the leaf
+        dictionary name -> node of the node children if any.
+        This value is None for the leaf
     """
 
     def __init__(self, name: str, size: int, time_modified: int,
@@ -33,11 +35,12 @@ class TreeNode:
         time_modified: int
             unix epoch of the file/directory last modified time
         permissions: str
-            string that represents the permissions attached to the file/directory
+            string that represents the permissions
+            attached to the file/directory
         """
-        self.data = FileSystemNode(name=name, size=size,
-                                   time_modified=time_modified,
-                                   permissions=permissions, node_type=node_type)
+        self.data = FileSystemNode(
+            name=name, size=size, time_modified=time_modified,
+            permissions=permissions, node_type=node_type)
         self.children: Optional[dict[str, TreeNode]] = None
 
     def __str__(self) -> str:
@@ -66,7 +69,8 @@ class FileSystemTree:
     root : TreeNode | None
         the root node of the tree
     current_node : TreeNode | None
-        the current node in the tree. Used to allow the path traversal in the tree
+        the current node in the tree.
+        Used to allow the path traversal in the tree
     """
 
     def __init__(self, json_path):
@@ -102,16 +106,21 @@ class FileSystemTree:
                 current_data = queue.pop(0)
                 node_data = current_data[0]
                 parent_node = current_data[1]
-                node_type = (FileSystemNodeType.DIRECTORY if "contents" in node_data
-                             else FileSystemNodeType.FILE)
+                node_type = (FileSystemNodeType.DIRECTORY
+                             if "contents" in node_data else
+                             FileSystemNodeType.FILE)
                 try:
-                    current_node = TreeNode(name=node_data["name"], size=node_data["size"],
-                                            permissions=node_data["permissions"],
-                                            time_modified=node_data["time_modified"],
-                                            node_type=node_type)
+                    current_node = TreeNode(
+                        name=node_data["name"],
+                        size=node_data["size"],
+                        permissions=node_data["permissions"],
+                        time_modified=node_data["time_modified"],
+                        node_type=node_type)
                 except KeyError:
-                    print("There is some invalid data in your json file. Ignoring it.",
-                          file=sys.stderr)
+                    print(
+                        "There is some invalid data in your json file. "
+                        "Ignoring it.",
+                        file=sys.stderr)
                     continue
                 parent_node.add_child(node_data["name"], current_node)
                 if node_type == FileSystemNodeType.DIRECTORY:
@@ -120,7 +129,8 @@ class FileSystemTree:
             self.root = root
 
     @staticmethod
-    def enqueue(queue: list[tuple[dict, TreeNode]], data: dict, parent: TreeNode) -> None:
+    def enqueue(queue: list[tuple[dict, TreeNode]],
+                data: dict, parent: TreeNode) -> None:
         """Static method that insert a tuple (dict, TreeNode) in a list
 
         Parameters
@@ -131,21 +141,23 @@ class FileSystemTree:
             first element of the tuple to enqueue.
             Represent the data that will be used to build the child
         parent: TreeNode
-            second element of the tuple to enqueue. 
+            second element of the tuple to enqueue.
             Represent the parent node of the child that will be built
         """
         for child_data in data["contents"]:
             queue.append((child_data, parent))
 
     @staticmethod
-    def filter_children(filter_by: str, children: list[TreeNode]) -> list[TreeNode]:
-        """Filter a list of TreeNode. 
+    def filter_children(
+            filter_by: str, children: list[TreeNode]) -> list[TreeNode]:
+        """Filter a list of TreeNode.
         The result will be a list with only file nodes or directory nodes
 
         Parameters
         ----------
         filter_by: str
-            filter key. file to get only file nodes, dir to get only directory nodes
+            filter key. file to get only file nodes, dir
+            to get only directory nodes
         children: list[TreeNode]
             list to filter
 
@@ -159,11 +171,14 @@ class FileSystemTree:
             filter_by_enum = (FileSystemNodeType.FILE if filter_by == "file"
                               else FileSystemNodeType.DIRECTORY)
             filtered_children = [
-                child for child in children if child.data.node_type == filter_by_enum]
+                child for child in children
+                if child.data.node_type == filter_by_enum]
         return filtered_children
 
     @staticmethod
-    def sort_children(children: list[TreeNode], sort_by: str, reverse: bool) -> None:
+    def sort_children(
+            children: list[TreeNode],
+            sort_by: str, reverse: bool) -> None:
         """Inplace sort the children parameter.
 
         Parameters
@@ -173,7 +188,8 @@ class FileSystemTree:
         sort_by : str
             The attribute of the TreeNode class used to sort the list
         reverse : bool
-            Wheter the sorting must be in descending or ascending order. True for descending
+            Wheter the sorting must be in descending or ascending order.
+            True for descending
         """
         children.sort(key=operator.attrgetter(sort_by), reverse=reverse)
 
@@ -204,7 +220,8 @@ class FileSystemTree:
 
     def print_children(self, show_all=False, long_listing=False,
                        reverse_sorting=False, sort_by_time=False,
-                       filter_by: Optional[str] = None, humanize=False) -> None:
+                       filter_by: Optional[str] = None,
+                       humanize=False) -> None:
         """Print the children of the curren_node
 
         Parameters
@@ -242,9 +259,10 @@ class FileSystemTree:
                         "%b %d %H:%M", localtime(child.data.time_modified))
                     formatted_size = humanize_size(
                         child.data.size) if humanize else child.data.size
-                    strings_to_print.append(f"{child.data.permissions} "
-                                            f"{formatted_size:>{size_max_length}} "
-                                            f"{formatted_time} {child.data.name}")
+                    strings_to_print.append(
+                        f"{child.data.permissions} "
+                        f"{formatted_size:>{size_max_length}} "
+                        f"{formatted_time} {child.data.name}")
                 else:
                     strings_to_print.append(child.data.name)
         join_operator = "\n" if long_listing else " "

@@ -1,4 +1,5 @@
-"""Module containing all the classes and method related to the filesystem of pyls"""
+"""Module containing all the classes and method
+related to the filesystem of pyls"""
 from dataclasses import dataclass
 from enum import Enum
 

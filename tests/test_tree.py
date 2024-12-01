@@ -14,7 +14,7 @@ def fixture_tree(mocker):
 
     Parameters
     ----------
-    mocker 
+    mocker
         The mocker object provided by pytest-mock
     """
     mocker.patch("pyls.utils.io.load_json_from_file",
@@ -31,7 +31,7 @@ def fixture_tree_nocd(mocker):
 
     Parameters
     ----------
-    mocker 
+    mocker
         The mocker object provided by pytest-mock
     """
     mocker.patch("pyls.utils.io.load_json_from_file",
@@ -41,7 +41,8 @@ def fixture_tree_nocd(mocker):
 
 
 def test_ls(capfd, tree):
-    """Test the print_children ignoring dotted file and with the short format"""
+    """Test the print_children ignoring dotted file
+    and with the short format"""
     tree.print_children()
     out, _ = capfd.readouterr()
     assert out == "LICENSE README.md ast go.mod lexer main.go parser token\n"
@@ -55,21 +56,23 @@ def test_ls_all(capfd, tree):
 
 
 def test_ls_long_listing_all(capfd, tree):
-    """Test print_children showing all files (-A) and with the long listing format (-l)"""
+    """Test print_children showing all files (-A)
+    and with the long listing format (-l)"""
     tree.print_children(show_all=True, long_listing=True)
     out, _ = capfd.readouterr()
     assert out == ut.long_listing_result_all
 
 
 def test_ls_long_listing(capfd, tree):
-    """Test print_children with the long listing format (-l) ignoring dotted file"""
+    """Test print_children with the long listing format (-l)
+    ignoring dotted file"""
     tree.print_children(long_listing=True)
     out, _ = capfd.readouterr()
     assert out == ut.long_listing_result
 
 
 def test_ls_long_listing_reversed(capfd, tree):
-    """Test print_children with the long listing format (-l) 
+    """Test print_children with the long listing format (-l)
     ignoring dotted file, in reverse order"""
     tree.print_children(long_listing=True, reverse_sorting=True)
     out, _ = capfd.readouterr()
@@ -77,7 +80,7 @@ def test_ls_long_listing_reversed(capfd, tree):
 
 
 def test_ls_long_listing_reversed_all(capfd, tree):
-    """Test print_children showing all files (-A) 
+    """Test print_children showing all files (-A)
     and with the long listing format (-l), in reverse order"""
     tree.print_children(show_all=True, long_listing=True, reverse_sorting=True)
     out, _ = capfd.readouterr()
@@ -85,7 +88,8 @@ def test_ls_long_listing_reversed_all(capfd, tree):
 
 
 def test_ls_reversed(capfd, tree):
-    """Test the print_children ignoring dotted file and with the short format, in reverse order"""
+    """Test the print_children ignoring dotted file
+    and with the short format, in reverse order"""
     tree.print_children(reverse_sorting=True)
     out, _ = capfd.readouterr()
     assert out == "token parser main.go lexer go.mod ast README.md LICENSE\n"
@@ -99,7 +103,7 @@ def test_ls_all_reversed(capfd, tree):
 
 
 def test_long_listing_sort_by_time(capfd, tree):
-    """Test print_children with the long listing format (-l) 
+    """Test print_children with the long listing format (-l)
     ignoring dotted file with the values sorted by time"""
     tree.print_children(long_listing=True, sort_by_time=True)
     out, _ = capfd.readouterr()
@@ -107,7 +111,7 @@ def test_long_listing_sort_by_time(capfd, tree):
 
 
 def test_long_listing_sort_by_time_reverse(capfd, tree):
-    """Test print_children with the long listing format (-l) 
+    """Test print_children with the long listing format (-l)
     ignoring dotted file with the values sorted by time, in reverse order"""
     tree.print_children(long_listing=True,
                         reverse_sorting=True, sort_by_time=True)
@@ -116,7 +120,7 @@ def test_long_listing_sort_by_time_reverse(capfd, tree):
 
 
 def test_ls_sort_by_time(capfd, tree):
-    """Test the print_children ignoring dotted file 
+    """Test the print_children ignoring dotted file
     and with the short format with the values sorted by time"""
     tree.print_children(sort_by_time=True)
     out, _ = capfd.readouterr()
@@ -124,29 +128,32 @@ def test_ls_sort_by_time(capfd, tree):
 
 
 def test_ls_sort_by_time_reverse(capfd, tree):
-    """Test the print_children ignoring dotted file 
-    and with the short format with the values sorted by time, in reverse order"""
+    """Test the print_children ignoring dotted file
+    and with the short format with the values sorted by time,
+    in reverse order"""
     tree.print_children(reverse_sorting=True, sort_by_time=True)
     out, _ = capfd.readouterr()
     assert out == "parser ast lexer token main.go go.mod LICENSE README.md\n"
 
 
 def test_long_listing_sort_by_time_reverse_only_file(capfd, tree):
-    """Test print_children with the long listing format (-l) 
-    ignoring dotted file with the values sorted by time and in reverse order.
+    """Test print_children with the long listing format (-l)
+    ignoring dotted file with the values sorted by timeand in reverse order.
     Furthermore, the values are filtered by file"""
-    tree.print_children(long_listing=True,
-                        reverse_sorting=True, sort_by_time=True, filter_by="file")
+    tree.print_children(
+        long_listing=True, reverse_sorting=True, sort_by_time=True,
+        filter_by="file")
     out, _ = capfd.readouterr()
     assert out == ut.ll_sort_by_time_reverse_only_file
 
 
 def test_long_listing_sort_by_time_reverse_only_dir(capfd, tree):
-    """Test print_children with the long listing format (-l) 
+    """Test print_children with the long listing format (-l)
     ignoring dotted file with the values sorted by time and in reverse order.
     Furthermore, the values are filtered by dir"""
-    tree.print_children(long_listing=True,
-                        reverse_sorting=True, sort_by_time=True, filter_by="dir")
+    tree.print_children(
+        long_listing=True, reverse_sorting=True, sort_by_time=True,
+        filter_by="dir")
     out, _ = capfd.readouterr()
     assert out == ut.ll_sort_by_time_reverse_only_dir
 
@@ -170,7 +177,8 @@ def test_change_directory_file_with_dot(tree_nocd):
 
 
 def test_change_directory_file_with_middle_dot(tree_nocd):
-    """Test change_directory with a file path with at the start and in the middle the ./ sequence"""
+    """Test change_directory with a file path with at the start
+    and in the middle the ./ sequence"""
     tree_nocd.change_directory("./parser/./parser.go")
     assert tree_nocd.current_node.data.name == "parser.go"
     assert tree_nocd.current_node.data.permissions == "-rw-r--r--"
@@ -197,12 +205,19 @@ def test_change_directory_directory_with_dot(tree_nocd):
 
 
 def test_change_directory_directory_with_trailing_slash(tree_nocd):
-    """Test change_directory with a directory path with leading ./ sequence and a trailing slash"""
+    """Test change_directory with a directory path with leading ./ sequence
+    and a trailing slash"""
     tree_nocd.change_directory("./token/")
     assert tree_nocd.current_node.data.name == "token"
     assert tree_nocd.current_node.data.permissions == "drwxr-xr-x"
     assert tree_nocd.current_node.data.size == 4096
     assert tree_nocd.current_node.data.time_modified == 1699954070
+
+
+def test_change_directory_invalidfile(tree_nocd):
+    """Test change_directory with a file path"""
+    result = tree_nocd.change_directory("test")
+    assert not result
 
 
 def test_build_tree_from_json_invalid_data(capfd, mocker):
