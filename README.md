@@ -74,7 +74,7 @@ This repository includes a comprehensive suite of unit tests to validate all maj
 
 1. **Install the development requirements:**
    ```python
-   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 2. **Execute tests:**
    ```

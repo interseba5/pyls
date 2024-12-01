@@ -40,7 +40,7 @@ def main():
     if tree.root:
         if not tree.change_directory(args.directory):
             print(
-                f"error: cannot access '{args.directory}':"
+                f"error: cannot access '{args.directory}': "
                 "No such file or directory")
         else:
             tree.print_children(
