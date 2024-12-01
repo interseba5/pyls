@@ -1,6 +1,7 @@
 """Command line interface for the pyls package"""
 
 import argparse
+import os
 
 from pyls.data.tree import FileSystemTree
 
@@ -32,7 +33,10 @@ parser.add_argument('directory', nargs='?')
 def main():
     """Function executed at startup"""
     args = parser.parse_args()
-    tree = FileSystemTree("structure.json")
+    tree = FileSystemTree(
+        os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "structure.json"))
     if tree.root:
         if not tree.change_directory(args.directory):
             print(

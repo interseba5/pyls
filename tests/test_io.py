@@ -42,5 +42,5 @@ def test_load_not_existing_file(capfd, mocker):
     mocker.patch("json.load", side_effect=FileNotFoundError)
     actual_ret = load_json_from_file("test")
     _, err = capfd.readouterr()
-    assert err == "There is no test file in the current folder\n"
+    assert err == "There is no test file\n"
     assert actual_ret == {}

@@ -10,6 +10,7 @@ authors = [
     { name = "Sebastiano Manfredini", email = "sebastianomanfredini0@gmail.com" }
 ]
 dependencies = []
+requires-python = ">=3.9"
 
 [project.scripts]
 pyls = "pyls.__main__:main"

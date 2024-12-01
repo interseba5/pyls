@@ -1,6 +1,7 @@
 """Module providing various methods that do io operations"""
 
 import json
+import os
 import sys
 
 
@@ -23,6 +24,6 @@ def load_json_from_file(json_path: str) -> dict:
     except ValueError:
         print("The provided json filesystem is invalid", file=sys.stderr)
     except FileNotFoundError:
-        print(f"There is no {json_path} file in the current folder",
+        print(f"There is no {os.path.basename(json_path)} file",
               file=sys.stderr)
     return json_data
