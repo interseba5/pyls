@@ -214,6 +214,13 @@ def test_change_directory_directory_with_trailing_slash(tree_nocd):
     assert tree_nocd.current_node.data.time_modified == 1699954070
 
 
+def test_change_directory_file_with_trailing_slash(tree_nocd):
+    """Test change_directory with a file  path with a trailing slash
+    Must return False"""
+    result = tree_nocd.change_directory("parser/parser.go/")
+    assert not result
+
+
 def test_change_directory_invalidfile(tree_nocd):
     """Test change_directory with a file path"""
     result = tree_nocd.change_directory("test")

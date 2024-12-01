@@ -219,6 +219,8 @@ class FileSystemTree:
                     current_node = current_node.children[component]
                 else:
                     return False
+        if current_node.data.node_type == FileSystemNodeType.FILE and path.endswith("/"):
+            return False
         self.current_node = current_node
         return True
 
