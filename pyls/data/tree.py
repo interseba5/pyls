@@ -101,14 +101,15 @@ class FileSystemTree:
                             permissions=json_data["permissions"],
                             time_modified=json_data["time_modified"],
                             node_type=FileSystemNodeType.DIRECTORY)
-            FileSystemTree.enqueue(queue=queue, data=json_data, parent=root)
+            FileSystemTree.enqueue_children(
+                queue=queue, data=json_data, parent=root)
             while len(queue) > 0:
                 current_data = queue.pop(0)
                 node_data = current_data[0]
                 parent_node = current_data[1]
                 node_type = (FileSystemNodeType.DIRECTORY
-                             if "contents" in node_data else
-                             FileSystemNodeType.FILE)
+                             if "contents" in node_data
+                             else FileSystemNodeType.FILE)
                 try:
                     current_node = TreeNode(
                         name=node_data["name"],
@@ -124,14 +125,17 @@ class FileSystemTree:
                     continue
                 parent_node.add_child(node_data["name"], current_node)
                 if node_type == FileSystemNodeType.DIRECTORY:
-                    FileSystemTree.enqueue(queue=queue, data=node_data,
-                                           parent=current_node)
+                    FileSystemTree.enqueue_children(
+                        queue=queue, data=node_data, parent=current_node)
             self.root = root
 
     @staticmethod
-    def enqueue(queue: list[tuple[dict, TreeNode]],
-                data: dict, parent: TreeNode) -> None:
-        """Static method that insert a tuple (dict, TreeNode) in a list
+    def enqueue_children(queue: list[tuple[dict, TreeNode]],
+                         data: dict, parent: TreeNode) -> None:
+        """Static method used to insert in the 'queue' list,
+        each object inside data["contents"]. The queue contains tuple
+        of type (dict, TreeNode) where dict is the node data and TreeNode
+        is a reference to the parent
 
         Parameters
         ----------
@@ -151,7 +155,7 @@ class FileSystemTree:
     def filter_children(
             filter_by: str, children: list[TreeNode]) -> list[TreeNode]:
         """Filter a list of TreeNode.
-        The result will be a list with only file nodes or directory nodes
+        The result will be a list with only file or directory nodes
 
         Parameters
         ----------
