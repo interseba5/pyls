@@ -3,6 +3,7 @@
 import pytest
 
 import tests.utils as ut
+from pyls.data.filesystem import FileSystemNodeType
 from pyls.data.tree import FileSystemTree
 
 
@@ -202,3 +203,37 @@ def test_change_directory_directory_with_trailing_slash(tree_nocd):
     assert tree_nocd.current_node.data.permissions == "drwxr-xr-x"
     assert tree_nocd.current_node.data.size == 4096
     assert tree_nocd.current_node.data.time_modified == 1699954070
+
+
+def test_build_tree_from_json_invalid_data(capfd, mocker):
+    """Test build_tree_from_json with a children with invalid data"""
+    mocker.patch("pyls.utils.io.load_json_from_file",
+                 return_value=ut.mock_invalid_object)
+    tree = FileSystemTree("mock")
+    _, err = capfd.readouterr()
+    assert len(tree.root.children) == 1
+    assert err == "There is some invalid data in your json file. Ignoring it.\n"
+
+
+def test_build_tree_from_json(mocker):
+    """Test build_tree_from_json with a file, a dir and an empty dir"""
+    mocker.patch("pyls.utils.io.load_json_from_file",
+                 return_value=ut.mock_valid_object)
+    tree = FileSystemTree("mock")
+    assert len(tree.root.children) == 3
+    assert tree.root.data.node_type == FileSystemNodeType.DIRECTORY
+    emptydir = tree.root.children["testemptydir"]
+    file = tree.root.children["testfile"]
+    testdir = tree.root.children["testdir"]
+    assert emptydir.data.name == "testemptydir"
+    assert emptydir.data.node_type == FileSystemNodeType.DIRECTORY
+    assert file.data.name == "testfile"
+    assert file.data.node_type == FileSystemNodeType.FILE
+    assert testdir.data.name == "testdir"
+    assert testdir.data.node_type == FileSystemNodeType.DIRECTORY
+    assert len(testdir.children) == 1
+    testnesteddir = testdir.children["testnesteddir"]
+    assert len(testnesteddir.children) == 1
+    assert testnesteddir.data.node_type == FileSystemNodeType.DIRECTORY
+    testnestedfile = testnesteddir.children["testnestedfile"]
+    assert testnestedfile.data.node_type == FileSystemNodeType.FILE

@@ -137,6 +137,65 @@ mock_object = {
     "contents": []
 }
 
+mock_invalid_object = {
+    "name": "interpreter",
+    "size": 4096,
+    "time_modified": 1699957865,
+    "permissions": "-rw-r--r--",
+    "contents": [{
+        "name": "interpreter",
+        "size": 4096,
+        "time_modified": 1699957865,
+        "permissions": "-rw-r--r--",
+        "contents": []
+    },
+        {
+        "size": 4096,
+        "time_modified": 1699957865,
+        "permissions": "-rw-r--r--",
+        "contents": []
+    }]
+}
+
+mock_valid_object = {
+    "name": "interpreter",
+    "size": 4096,
+    "time_modified": 1699957865,
+    "permissions": "-rw-r--r--",
+    "contents": [{
+        "name": "testemptydir",
+        "size": 4096,
+        "time_modified": 1699957865,
+        "permissions": "-rw-r--r--",
+        "contents": []
+    },
+        {
+        "name": "testfile",
+        "size": 4096,
+        "time_modified": 1699957865,
+        "permissions": "-rw-r--r--",
+    },
+        {
+        "name": "testdir",
+        "size": 4096,
+        "time_modified": 1699957865,
+        "permissions": "-rw-r--r--",
+        "contents": [{
+            "name": "testnesteddir",
+            "size": 4096,
+            "time_modified": 1699957865,
+            "permissions": "-rw-r--r--",
+            "contents": [{
+                "name": "testnestedfile",
+                "size": 4096,
+                "time_modified": 1699957865,
+                "permissions": "-rw-r--r--",
+            },]
+        },]
+    },
+    ]
+}
+
 long_listing_result = """-rw-r--r-- 1071 Nov 14 06:57 LICENSE
 -rw-r--r--   83 Nov 14 06:57 README.md
 drwxr-xr-x 4096 Nov 14 11:28 ast

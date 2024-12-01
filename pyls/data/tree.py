@@ -1,11 +1,12 @@
 """Module that contains all the class and method related to the tree structure of the filesystem"""
 
 import operator
+import sys
 from time import localtime, strftime
 from typing import Optional
 
 import pyls.utils.io as pylsio
-from pyls.data.filesystem import FileSystemNode
+from pyls.data.filesystem import FileSystemNode, FileSystemNodeType
 from pyls.utils.formatters import humanize_size
 
 
@@ -20,7 +21,8 @@ class TreeNode:
         dictionary name -> node of the node children if any. This value is None for the leaf
     """
 
-    def __init__(self, name: str, size: int, time_modified: int, permissions: str):
+    def __init__(self, name: str, size: int, time_modified: int,
+                 permissions: str, node_type: FileSystemNodeType):
         """
         Parameters
         ----------
@@ -34,7 +36,8 @@ class TreeNode:
             string that represents the permissions attached to the file/directory
         """
         self.data = FileSystemNode(name=name, size=size,
-                                   time_modified=time_modified, permissions=permissions)
+                                   time_modified=time_modified,
+                                   permissions=permissions, node_type=node_type)
         self.children: Optional[dict[str, TreeNode]] = None
 
     def __str__(self) -> str:
@@ -92,17 +95,26 @@ class FileSystemTree:
         if json_data:
             root = TreeNode(name=json_data["name"], size=json_data["size"],
                             permissions=json_data["permissions"],
-                            time_modified=json_data["time_modified"])
+                            time_modified=json_data["time_modified"],
+                            node_type=FileSystemNodeType.DIRECTORY)
             FileSystemTree.enqueue(queue=queue, data=json_data, parent=root)
             while len(queue) > 0:
                 current_data = queue.pop(0)
                 node_data = current_data[0]
                 parent_node = current_data[1]
-                current_node = TreeNode(name=node_data["name"], size=node_data["size"],
-                                        permissions=node_data["permissions"],
-                                        time_modified=node_data["time_modified"])
+                node_type = (FileSystemNodeType.DIRECTORY if "contents" in node_data
+                             else FileSystemNodeType.FILE)
+                try:
+                    current_node = TreeNode(name=node_data["name"], size=node_data["size"],
+                                            permissions=node_data["permissions"],
+                                            time_modified=node_data["time_modified"],
+                                            node_type=node_type)
+                except KeyError:
+                    print("There is some invalid data in your json file. Ignoring it.",
+                          file=sys.stderr)
+                    continue
                 parent_node.add_child(node_data["name"], current_node)
-                if "contents" in node_data:
+                if node_type == FileSystemNodeType.DIRECTORY:
                     FileSystemTree.enqueue(queue=queue, data=node_data,
                                            parent=current_node)
             self.root = root
@@ -144,12 +156,10 @@ class FileSystemTree:
         """
         filtered_children = children
         if filter_by in ("file", "dir"):
-            if filter_by == "file":
-                filtered_children = [
-                    child for child in children if child.children is None]
-            else:
-                filtered_children = [
-                    child for child in children if child.children is not None]
+            filter_by_enum = (FileSystemNodeType.FILE if filter_by == "file"
+                              else FileSystemNodeType.DIRECTORY)
+            filtered_children = [
+                child for child in children if child.data.node_type == filter_by_enum]
         return filtered_children
 
     @staticmethod
