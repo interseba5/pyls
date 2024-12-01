@@ -28,14 +28,21 @@ parser.add_argument('--help', action='help',
                     help='display this help and exit')
 parser.add_argument('directory', nargs='?')
 
-args = parser.parse_args()
-tree = FileSystemTree("structure.json")
-if tree.root:
-    if not tree.change_directory(args.directory):
-        print(
-            f"error: cannot access '{args.directory}':"
-            "No such file or directory")
-    else:
-        tree.print_children(
-            show_all=args.A, long_listing=args.l, reverse_sorting=args.r,
-            sort_by_time=args.t, filter_by=args.filter, humanize=args.h)
+
+def main():
+    """Function executed at startup"""
+    args = parser.parse_args()
+    tree = FileSystemTree("structure.json")
+    if tree.root:
+        if not tree.change_directory(args.directory):
+            print(
+                f"error: cannot access '{args.directory}':"
+                "No such file or directory")
+        else:
+            tree.print_children(
+                show_all=args.A, long_listing=args.l, reverse_sorting=args.r,
+                sort_by_time=args.t, filter_by=args.filter, humanize=args.h)
+
+
+if __name__ == "__main__":
+    main()

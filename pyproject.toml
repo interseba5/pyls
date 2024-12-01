@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyls"
+version = "1.0.0"
+description = "Python emulator of the ls command. List directory contents based on a json filesystem"
+authors = [
+    { name = "Sebastiano Manfredini", email = "sebastianomanfredini0@gmail.com" }
+]
+dependencies = []
+
+[project.scripts]
+pyls = "pyls.__main__:main"
